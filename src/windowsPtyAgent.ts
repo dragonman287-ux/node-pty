@@ -97,11 +97,13 @@ export class WindowsPtyAgent {
     const connect = (this._ptyNative as IConptyNative).connect(this._pty, commandLine, cwd, env, c => this._$onProcessExit(c));
     this._innerPid = connect.pid;
   }
-
+  
   public resize(cols: number, rows: number): void {
     if (this._exitCode !== undefined) {
-      throw new Error('Cannot resize a pty that has already exited');
-    }
+    return;
+  }
+   this._ptyNative.resize(this._pty, cols, rows);
+  }
     this._ptyNative.resize(this._pty, cols, rows);
   }
 
